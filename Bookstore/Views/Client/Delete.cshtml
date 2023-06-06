@@ -1,0 +1,55 @@
+﻿@model Bookstore.Models.ClientModel
+
+@{
+    ViewData["Title"] = "Excluir Cliente";
+}
+
+<h1>Excluir Cliente</h1>
+
+<h3>Tem certeza de que deseja excluir o cadastro deste cliente?</h3>
+<div>
+    <h6>Ao clicar em excluir o registro de cliente será removido da base de dados permanentemente.</h6>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.CPF)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.CPF)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.DateBirth)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.DateBirth)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ClientId" />
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Excluir</button>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+    </form>
+</div>

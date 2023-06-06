@@ -1,0 +1,183 @@
+﻿@model Bookstore.Models.SaleItemModel
+
+@{
+    ViewData["Title"] = "Editar Item da Vemda";
+}
+
+<h1>Editar Item da Vemda</h1>
+
+<h4>Editando cadastro de item da venda de livro para disponibilizar na loja</h4>
+<hr />
+<div id="notification"></div>
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SaleItemId" />
+            <input type="hidden" asp-for="SaleId" />
+            <div class="form-group">
+                <label asp-for="Book" class="control-label"></label>
+                <div class="input-group mb-3">
+                    <select asp-for="BookId" asp-items="ViewBag.Books" class="form-control">
+                        <option value="">Selecione...</option>
+                    </select>
+                    <a asp-controller="Book" asp-action="Index" target="_blank" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+                <span asp-validation-for="BookId" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label asp-for="Book.Author" class="control-label"></label>
+                        <input asp-for="Book.Author" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label asp-for="Value" class="control-label"></label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">R$</span>
+                            <input asp-for="Value" class="form-control" readonly />
+                        </div>
+                        <span asp-validation-for="Value" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label asp-for="Book.PublishingCompany" class="control-label"></label>
+                        <input asp-for="Book.PublishingCompany" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group mb-3">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" class="form-control" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label asp-for="Book.ISBN" class="control-label"></label>
+                        <input asp-for="Book.ISBN" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label asp-for="Subtotal" class="control-label"></label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">R$</span>
+                            <input asp-for="Subtotal" class="form-control" readonly />
+                        </div>
+                        <span asp-validation-for="Subtotal" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Salvar</button>
+                <a asp-controller="Sale" asp-action="Edit" asp-route-id="@Model.SaleId" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        function notification(message) {
+
+            var htmlAlert = [
+                '<div class="alert alert-warning alert-dismissible fade show" role="alert">',
+                '    <i class="bi bi-exclamation-triangle fs-3" style="position: absolute; margin-top: -7px;"></i>',
+                '    <strong style="margin-left: 35px;margin-right:5px;">Atenção!</strong><span>',
+                message,
+                '    </span>',
+                '    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ];
+
+            $("#notification").prepend(htmlAlert.join(''));
+
+            $("#notification .alert").first().hide().fadeIn(200).delay(5000).fadeOut(1000, function () { $(this).remove(); });
+        }
+        
+        $(document).ready(function () {
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+           
+            //Date dd/MM/yyyy
+            $.validator.methods.date = function (value, element) {
+                var date = value.split("/");
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(date[2], date[1], date[0]).toString());
+            }
+
+            $("#BookId").change(function () {
+
+                var bookId = $(this).children("option:selected").val();
+
+                $.ajax({
+                    url: "/api/BookApi/" + bookId,
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result, status, xhr) {
+                        
+                        var value = result.value;
+                        var quantity = $("#Quantity").val();
+
+                        var subtotal = value * quantity;
+
+                        $("#Value").val(value.toFixed(2).replace(".", ","));
+                        $("#Subtotal").val(subtotal.toFixed(2).replace(".", ","));
+
+
+                        $("#Book_Author").val(result.author);
+                        $("#Book_PublishingCompany").val(result.publishingCompany);
+                        $("#Book_ISBN").val(result.isbn);
+
+                        if (result.quantity <= 0) {
+                            notification('Este ' + result.title + ' esta com estoque vazio.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr)
+
+                        var msg = "";
+                        msg += "Code: " + xhr.status + "\n";
+                        msg += "Text: " + xhr.statusText + "\n";
+                        if (xhr.responseJSON != null) {
+                            msg += "Message" + xhr.responseJSON.Message + "\n";
+                        }
+
+                        alert(msg);
+                    }
+                });
+            });
+
+            $("#Quantity").change(function () {
+
+                var _value = $("#Value").val();
+                var quantity = $(this).val();
+
+                var subtotal = _value.replace(",", ".") * quantity;
+
+                $("#Subtotal").val(subtotal.toFixed(2).replace(".", ","));
+
+            });
+
+        });
+    </script>
+}
+

@@ -1,0 +1,66 @@
+﻿@model Bookstore.Models.BookModel
+
+@{
+    ViewData["Title"] = "Detalhes Livro";
+}
+
+<h1>Detalhes Livro</h1>
+
+<div>
+    <h4>Detalhes das informações do livro cadastrado</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.PublishingCompany)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.PublishingCompany)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.BarCode)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.BarCode)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.BookId" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Editar</a>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+</div>

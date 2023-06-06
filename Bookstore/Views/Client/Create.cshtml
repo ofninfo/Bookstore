@@ -1,0 +1,74 @@
+﻿@model Bookstore.Models.ClientModel
+
+@{
+    ViewData["Title"] = "Criar Cliente";
+}
+
+<h1>Criar Cliente</h1>
+
+<h4>Criando cadastro de cliente para disponibilizar na loja</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="CPF" class="control-label"></label>
+                        <input asp-for="CPF" class="form-control" />
+                        <span asp-validation-for="CPF" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="DateBirth" class="control-label"></label>
+                        <input asp-for="DateBirth" class="form-control" />
+                        <span asp-validation-for="DateBirth" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                </div>
+            </div>
+
+           
+          
+          
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Criar</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

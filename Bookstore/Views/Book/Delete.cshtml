@@ -1,0 +1,70 @@
+﻿@model Bookstore.Models.BookModel
+
+@{
+    ViewData["Title"] = "Excluir Livro";
+}
+
+<h1>Excluir Livro</h1>
+
+<h3>Tem certeza de que deseja excluir cadastro deste livro?</h3>
+
+<div>
+    <h6>Ao clicar em excluir o registro de livro será removido da base de dados permanentemente.</h6>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.PublishingCompany)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.PublishingCompany)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.BarCode)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.BarCode)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="BookId" />
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Excluir</button>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+    </form>
+</div>

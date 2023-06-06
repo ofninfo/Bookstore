@@ -1,0 +1,121 @@
+﻿@model Bookstore.Models.SaleModel
+
+@{
+    ViewData["Title"] = "Excluir Venda";
+}
+
+<h1>Excluir Venda</h1>
+
+<h3>Tem certeza de que deseja excluir cadastro desta venda?</h3>
+<div>
+    <h6>Ao clicar em excluir o registro de venda será removido da base de dados permanentemente.</h6>
+    <hr />
+    <div class="card my-3">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-8 pt-1">
+                    Item da Venda
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped table-borderless">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Descrição
+                        </th>
+                        <th>
+                            Value
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Subtotal
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model.SaleItems)
+                    {
+                        <tr>
+                            <td>
+                                @count
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Book.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Subtotal)
+                            </td>
+                            <td class="text-end">
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Subtotal)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Client.Name)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd class="col-4">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="SaleId" />
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Excluir</button>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+    </form>
+</div>

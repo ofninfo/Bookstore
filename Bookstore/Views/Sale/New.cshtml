@@ -1,0 +1,110 @@
+﻿@model Bookstore.Models.SaleModel
+
+@{
+    ViewData["Title"] = "Nova Venda: " + Model.SaleId.ToString("000000");
+}
+
+<h1>Venda: @Model.SaleId.ToString("000000")</h1>
+
+<h4>Venda de livos</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="New">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8 pt-2">
+                            Item da Venda
+                        </div>
+                        <div class="col-4 text-end">
+                            <a asp-controller="SaleItem" asp-action="Create" asp-route-id="@Model.SaleId" class="btn btn-outline-primary"><i class="bi bi-plus-lg"></i> New</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Descrição
+                                </th>
+                                <th>
+                                    Value
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Subtotal
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 1;
+                            }
+                            @foreach (var item in Model.SaleItems)
+                            {
+                                <tr>
+                                    <td>
+                                        @count
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Book.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Value)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quantity)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Subtotal)
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Action product item sale">
+                                            <a asp-action="Details" asp-route-id="@item.SaleItemId" class="btn btn-success"><i class="bi bi-card-text"></i></a>
+                                            <a asp-action="Edit" asp-route-id="@item.SaleItemId" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                            <a asp-action="Delete" asp-route-id="@item.SaleItemId" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" readonly />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientId" class="control-label"></label>
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.Clients">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <a asp-action="New" class="btn btn-success"><i class="bi bi-cart-plus"></i> Nova Vemda</a>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-cart-check-fill"></i> Finalizar</button>
+                <a asp-action="Cancel" asp-route-id="@Model.SaleId" class="btn btn-outline-danger"><i class="bi bi-cart-x"></i> Cancelar</a>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i> Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

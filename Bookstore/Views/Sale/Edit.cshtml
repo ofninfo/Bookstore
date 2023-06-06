@@ -1,0 +1,218 @@
+﻿@using Bookstore.Commun;
+@model Bookstore.Models.SaleModel
+
+@{
+    ViewData["Title"] = "Editar Venda: " + Model.SaleId.ToString("000000");
+}
+
+<h1>Editar Venda: @Model.SaleId.ToString("000000")</h1>
+
+<h4>Editando cadastro de venda de livro para disponibilizar na loja</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Edit">
+            <fieldset @((Model.Status != SaleStatus.Open) ? "disabled" : "")>
+                <input type="hidden" asp-for="SaleId" />
+                <input type="hidden" asp-for="SaleItems" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="card my-3">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-8 pt-1">
+                                Item da Venda
+                            </div>
+                            <div class="col-4 text-end">
+                                <a asp-controller="SaleItem" asp-action="Create" asp-route-id="@Model.SaleId" class="btn btn-outline-success btn-sm"><i class="bi bi-plus-lg"></i> Adicionar Livro</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped table-borderless">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        Descrição
+                                    </th>
+                                    <th>
+                                        Value
+                                    </th>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Subtotal
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var item in Model.SaleItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            @count
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Book.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Value)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Quantity)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Subtotal)
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="Action product item sale">
+                                                <a asp-controller="SaleItem" asp-action="Details" asp-route-id="@item.SaleItemId" class="btn btn-secondary"><i class="bi bi-card-text"></i></a>
+                                                <a asp-controller="SaleItem" asp-action="Edit" asp-route-id="@item.SaleItemId" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                <a asp-controller="SaleItem" asp-action="Delete" asp-route-id="@item.SaleItemId" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <span asp-validation-for="SaleItems" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label asp-for="Date" class="control-label"></label>
+                            <input asp-for="Date" class="form-control" readonly />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label asp-for="Subtotal" class="control-label"></label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">R$</span>
+                                <input asp-for="Subtotal" class="form-control" readonly />
+                            </div>
+                            <span asp-validation-for="Subtotal" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label asp-for="Client" class="control-label"></label>
+                            <select asp-for="ClientId" class="form-control" asp-items="ViewBag.Clients">
+                                <option value="">Selecione...</option>
+                            </select>
+                            <span asp-validation-for="ClientId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label asp-for="Discount" class="control-label"></label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">R$</span>
+                                <input asp-for="Discount" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Discount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label"></label>
+                            <input asp-for="Status" class="form-control" readonly />
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label asp-for="Total" class="control-label"></label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">R$</span>
+                                <input asp-for="Total" class="form-control" readonly />
+                            </div>
+                            <span asp-validation-for="Total" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group my-3">
+                <a asp-action="Edit" asp-route-id="" target="_blank" class="btn btn-success" onclick="return confirm('Deseja realmente abrir a janela para nova venda?');"><i class="bi bi-cart-plus"></i> Nova Vemda</a>
+                <fieldset @((Model.Status != SaleStatus.Open) ? "disabled" : "") style="display: inline;">
+                    <button type="submit" name="action" value="Closed" class="btn btn-primary"><i class="bi bi-cart-check-fill"></i> Finalizar</button>
+                    <button type="submit" name="action" value="Save" class="btn btn-outline-primary"><i class="bi bi-save"></i> Salvar</button>
+                    @*<a asp-action="Cancel" asp-route-id="@Model.SaleId" class="btn btn-outline-danger" onclick="return confirm('Deseja realmente cancelar esta venda?');"><i class="bi bi-cart-x"></i> Cancelar</a>*@
+                    <button type="submit" name="action" value="Cancel" class="btn btn-outline-danger" onclick="return confirm('Deseja realmente cancelar esta venda?');"><i class="bi bi-cart-x"></i> Cancelar</button>
+                </fieldset>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+            //Date dd/MM/yyyy
+            $.validator.methods.date = function (value, element) {
+                var date = value.split("/");
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(date[2], date[1], date[0]).toString());
+            }
+
+            $("#Subtotal").change(function () {
+
+                var subtotal = $(this).val();
+                var discount = $("#Discount").val();
+
+                var total = subtotal.replace(",", ".") - discount.replace(",", ".");
+
+                $("#Total").val(total.toFixed(2).replace(".", ","));
+            });
+
+            $("#Discount").change(function () {
+                debugger
+                var subtotal = $("#Subtotal").val();
+                var discount = $(this).val();
+
+                var total = subtotal.replace(",", ".") - discount.replace(",", ".");
+
+                $("#Discount").val(parseFloat(discount.replace(",", ".")).toFixed(2).replace(".", ","));
+                $("#Total").val(total.toFixed(2).replace(".", ","));
+
+            });
+
+            setTimeout(function () {
+                $("#Subtotal").change();
+            }, 100)
+
+            $("#newSale").click(function () {
+                return confirm("teste");
+            });
+        });
+    </script>
+}
